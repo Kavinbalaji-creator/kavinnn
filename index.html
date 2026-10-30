@@ -407,7 +407,7 @@
       </div>
       <div class="card">
         <div class="eyebrow">Secure IoT dashboard</div>
-        <h2>Welcome SNS </h2>
+        <h2>Welcome back</h2>
         <p class="desc">Sign in with the Firebase Email/Password account for this project.</p>
         <label for="email">Email address</label><input id="email" type="email" autocomplete="username"
           placeholder="project email">
@@ -492,7 +492,7 @@
   <script>
     // Firebase web app configuration. Paste the apiKey from Firebase Console here.
     const firebaseConfig = {
-      apiKey: "AIzaSyBnLTXAtTXbZPzHpdH2k04DQXnJ9QjjUmE",
+      apiKey: "AIzaSyBnLTXAtTXbZPzHpdH2kO4DQXnJ9QjjUmE",
       authDomain: "mkb-solar-cooling-system.firebaseapp.com",
       databaseURL: "https://mkb-solar-cooling-system-default-rtdb.firebaseio.com",
       projectId: "mkb-solar-cooling-system",
@@ -501,12 +501,11 @@
       appId: "1:746491395502:web:dc8bad5c0dfa15f179dc3f",
       measurementId: "G-8P64R9T2XQ"
     };
-
     const $ = id => document.getElementById(id);
     let auth, db, sensorRef, statusRef, controlRef, currentMode = "AUTO";
 
     try {
-      if (firebaseConfig.apiKey !== "PASTE_YOUR_FIREBASE_WEB_API_KEY") {
+      if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "PASTE_YOUR_FIREBASE_WEB_API_KEY") {
         firebase.initializeApp(firebaseConfig);
         auth = firebase.auth();
         db = firebase.database();
@@ -522,8 +521,11 @@
     }
 
     function showLogin() { $("loginView").classList.remove("hidden"); $("dashboard").classList.add("hidden"); }
+    let listenersStarted = false;
     function showDashboard() {
       $("loginView").classList.add("hidden"); $("dashboard").classList.remove("hidden");
+      if (listenersStarted) return;
+      listenersStarted = true;
       sensorRef = db.ref("sensor");
       statusRef = db.ref("status");
       controlRef = db.ref("control");
@@ -559,7 +561,17 @@
       try { await auth.signInWithEmailAndPassword($("email").value.trim(), $("password").value); }
       catch (e) { $("loginError").textContent = e.message; }
     });
-    $("logoutBtn").addEventListener("click", () => auth.signOut());
+    $("logoutBtn").addEventListener("click", async () => {
+      try {
+        listenersStarted = false;
+        if (sensorRef) sensorRef.off();
+        if (statusRef) statusRef.off();
+        if (controlRef) controlRef.off();
+        await auth.signOut();
+      } catch (e) {
+        $("controlMessage").textContent = "Logout failed: " + e.message;
+      }
+    });
     async function writeControl(data) {
       $("controlMessage").textContent = "Saving…";
       try { await controlRef.update(data); $("controlMessage").textContent = "Saved to Firebase."; }

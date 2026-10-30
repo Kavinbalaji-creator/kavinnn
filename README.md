@@ -1,32 +1,42 @@
-# MKB Solar Cooling System — Netlify website
+# MKB Solar Cooling System — corrected Netlify website
 
-## Before deploying
-1. Open `index.html`.
-2. Find `PASTE_YOUR_FIREBASE_WEB_API_KEY`.
-3. Replace it with the `apiKey` value from Firebase Console → Project settings → General → Your web app.
-4. Save the file.
+## What was corrected
+- Fixed the Firebase initialization condition. The uploaded source compared the API key with itself, which prevented Firebase initialization.
+- Kept Firebase Email/Password login.
+- Kept the live dashboard and the `/sensor`, `/status`, and `/control` database paths.
+- Added protection against attaching duplicate database listeners after repeated login/logout cycles.
 
-## Deploy with GitHub + Netlify
-1. Create a GitHub repository (for example `mkb-solar-cooling-website`).
-2. Upload `index.html` to the repository root and commit.
-3. In Netlify choose **Add new site → Import an existing project**.
-4. Connect GitHub and select the repository.
-5. Build command: leave blank. Publish directory: `.` (root).
-6. Deploy the site.
+## Firebase configuration
+The source currently contains the API key value from the supplied file. If Firebase still reports `auth/api-key-not-valid`, copy the `apiKey` directly using the copy control in Firebase Console → Project settings → General → Your web app, and replace only the `apiKey` value in `index.html`. Also check Google Cloud API key restrictions and that Identity Toolkit API is enabled.
 
-## Firebase data contract for the ESP32 firmware
-The website listens for:
-- `/sensor/temperature` — number, Celsius
-- `/sensor/humidity` — number, percent
-- `/sensor/updatedAt` — Unix timestamp in milliseconds
-- `/status/peltier` — string `ON` or `OFF`
+## Firebase Authentication
+Create the Email/Password user in Firebase Console → Authentication → Users. Do not put the account password in this file or share it.
 
-The website writes:
-- `/control/mode` — `AUTO` or `MANUAL`
-- `/control/targetTemperature` — number
-- `/control/manualPeltier` — boolean
+In Firebase Authentication → Settings → Authorized domains, ensure `mkbcooling.netlify.app` is listed.
 
-The ESP32 firmware must be updated to read `/control` and write `/sensor` and `/status` using the same paths. Website controls will not operate the relay until that firmware integration is completed.
+## Realtime Database security
+Keep the database private. For a simple single-user prototype, rules can require authentication:
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+For a production system, narrow these rules to the required paths and authorized UID.
 
-## Security
-Do not make the database publicly readable/writable. Configure Firebase Authentication and Realtime Database rules so only authenticated, authorized users can access the required paths. Do not put a Firebase service-account private key or user password in this website.
+## ESP32 data contract
+Website reads:
+- `/sensor/temperature` number
+- `/sensor/humidity` number
+- `/sensor/updatedAt` Unix timestamp in milliseconds
+- `/status/peltier` string `ON` or `OFF`
+
+Website writes:
+- `/control/mode` string `AUTO` or `MANUAL`
+- `/control/targetTemperature` number
+- `/control/manualPeltier` boolean
+
+The ESP32 firmware must implement these same paths. Until that firmware is updated, the website cannot receive live sensor data or control the relay.
+
+## Deploy
+Commit `index.html` to the connected GitHub repository. Netlify should redeploy automatically. For a plain static site, use a blank build command and `.` as the publish directory.
