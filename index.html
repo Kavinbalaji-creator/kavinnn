@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <title>MKB | Smart Solar Cooling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #101e30;
+      --panel2: #14263b;
+      --line: #263b52;
+      --text: #eef6ff;
+      --muted: #8fa5bd;
+      --cyan: #42d6e8;
+      --blue: #5795ff;
+      --green: #42d392;
+      --red: #ff7185;
+      --amber: #ffc56a
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 15% 0%, #173452 0, transparent 38%), var(--bg);
+      color: var(--text);
+      font-family: "DM Sans", sans-serif;
+      min-height: 100vh
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: auto;
+      padding: 28px 20px 48px
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #42d6e8, #5795ff);
+      display: grid;
+      place-items: center;
+      color: #061321;
+      font: 700 18px "Space Grotesk"
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0
+    }
+
+    .brand h1 {
+      font: 700 19px "Space Grotesk";
+      margin: 0
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #71849a
+    }
+
+    .dot.live {
+      background: var(--green);
+      box-shadow: 0 0 12px #42d392
+    }
+
+    .hero {
+      margin-bottom: 22px
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase
+    }
+
+    .hero h2 {
+      font: 700 clamp(27px, 4vw, 40px) "Space Grotesk";
+      margin: 8px 0
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin: 0;
+      max-width: 650px;
+      line-height: 1.6
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(20, 38, 59, .96), rgba(12, 26, 42, .96));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 21px;
+      box-shadow: 0 14px 38px #0002
+    }
+
+    .metric {
+      grid-column: span 4;
+      min-height: 155px
+    }
+
+    .metric-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .ico {
+      width: 35px;
+      height: 35px;
+      border-radius: 11px;
+      background: #203c58;
+      display: grid;
+      place-items: center;
+      font-size: 18px
+    }
+
+    .value {
+      font: 700 37px "Space Grotesk";
+      margin: 17px 0 4px
+    }
+
+    .unit {
+      font-size: 17px;
+      color: var(--muted)
+    }
+
+    .sub {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .wide {
+      grid-column: span 7
+    }
+
+    .side {
+      grid-column: span 5
+    }
+
+    .card h3 {
+      font: 600 17px "Space Grotesk";
+      margin-bottom: 5px
+    }
+
+    .desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 18px
+    }
+
+    .statusrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .statusrow:last-child {
+      border: 0
+    }
+
+    .statuslabel {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .statusval {
+      font-weight: 700
+    }
+
+    .on {
+      color: var(--green)
+    }
+
+    .off {
+      color: var(--red)
+    }
+
+    .modes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin: 12px 0 18px
+    }
+
+    .mode {
+      border: 1px solid var(--line);
+      background: #0c1a2a;
+      color: var(--muted);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      font: 600 13px "DM Sans"
+    }
+
+    .mode.active {
+      border-color: var(--cyan);
+      background: #15354a;
+      color: var(--cyan)
+    }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin: 14px 0 7px
+    }
+
+    input {
+      width: 100%;
+      background: #091727;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--text);
+      padding: 12px;
+      font: 500 15px "DM Sans";
+      outline: none
+    }
+
+    input:focus {
+      border-color: var(--cyan)
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 12px 15px;
+      background: linear-gradient(100deg, #42d6e8, #5795ff);
+      color: #061321;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 12px
+    }
+
+    .btn.secondary {
+      background: #20374f;
+      color: var(--text);
+      border: 1px solid var(--line)
+    }
+
+    .btn.danger {
+      background: #4a2431;
+      color: #ffb7c2;
+      border: 1px solid #743546
+    }
+
+    .manual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px
+    }
+
+    .note {
+      margin-top: 16px;
+      border: 1px solid #5c4b2e;
+      background: #302719;
+      color: #ffdda2;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.5
+    }
+
+    .login {
+      max-width: 430px;
+      margin: 8vh auto
+    }
+
+    .login .card {
+      padding: 28px
+    }
+
+    .login h2 {
+      font: 700 26px "Space Grotesk"
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    .error {
+      color: #ff9baa;
+      font-size: 12px;
+      margin-top: 10px
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    footer {
+      text-align: center;
+      color: #71869d;
+      font-size: 11px;
+      margin-top: 26px
+    }
+
+    @media(max-width:760px) {
+      .metric {
+        grid-column: span 6
+      }
+
+      .wide,
+      .side {
+        grid-column: span 12
+      }
+
+      .wrap {
+        padding: 19px 14px 35px
+      }
+
+      .top {
+        align-items: flex-start
+      }
+
+      .pill {
+        font-size: 11px
+      }
+
+      .value {
+        font-size: 32px
+      }
+    }
+
+    @media(max-width:430px) {
+      .metric {
+        grid-column: span 12
+      }
+
+      .top {
+        flex-direction: column
+      }
+
+      .brand h1 {
+        font-size: 17px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section id="loginView" class="login">
+      <div class="brand" style="margin-bottom:20px">
+        <div class="logo">MKB</div>
+        <div>
+          <h1>MKB ELECTRICAL & ELECTRONICS</h1><small>SMART SOLAR COOLING SYSTEM</small>
+        </div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Secure IoT dashboard</div>
+        <h2>Welcome back</h2>
+        <p class="desc">Sign in with the Firebase Email/Password account for this project.</p>
+        <label for="email">Email address</label><input id="email" type="email" autocomplete="username"
+          placeholder="project email">
+        <label for="password">Password</label><input id="password" type="password" autocomplete="current-password"
+          placeholder="Password">
+        <button class="btn" id="loginBtn">Sign in</button>
+        <p id="loginError" class="error"></p>
+      </div>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <header class="top">
+        <div class="brand">
+          <div class="logo">MKB</div>
+          <div>
+            <h1>MKB SMART COOLING</h1><small>Solar-powered mini cooling system</small>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="pill"><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting</span>
+          </div><button id="logoutBtn" class="btn secondary"
+            style="width:auto;margin:0;padding:9px 13px">Logout</button>
+        </div>
+      </header>
+      <section class="hero">
+        <div class="eyebrow">Live monitoring · IoT</div>
+        <h2>Cooling system dashboard</h2>
+        <p>Monitor temperature and humidity, check Peltier status, and send control settings to your ESP32 through
+          Firebase.</p>
+      </section>
+      <section class="grid">
+        <article class="card metric">
+          <div class="metric-head"><span>Temperature</span><span class="ico">🌡️</span></div>
+          <div class="value"><span id="temperature">--.-</span><span class="unit"> °C</span></div>
+          <div class="sub">Latest ESP32 sensor reading</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-head"><span>Humidity</span><span class="ico">💧</span></div>
+          <div class="value"><span id="humidity">--.-</span><span class="unit"> %</span></div>
+          <div class="sub">Relative humidity · DHT11</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-head"><span>Peltier</span><span class="ico">❄️</span></div>
+          <div class="value" style="font-size:30px" id="peltier">--</div>
+          <div class="sub">Latest controller status</div>
+        </article>
+        <article class="card wide">
+          <h3>System status</h3>
+          <p class="desc">Live values received from the Firebase database</p>
+          <div class="statusrow"><span class="statuslabel">ESP32 sensor</span><span class="statusval"
+              id="sensorStatus">Waiting for data</span></div>
+          <div class="statusrow"><span class="statuslabel">Operating mode</span><span class="statusval"
+              id="modeStatus">--</span></div>
+          <div class="statusrow"><span class="statuslabel">Last update</span><span class="statusval"
+              id="lastUpdate">--</span></div>
+        </article>
+        <article class="card side">
+          <h3>Control panel</h3>
+          <p class="desc">Choose automatic or manual control</p>
+          <div class="modes"><button class="mode active" id="autoMode">AUTO MODE</button><button class="mode"
+              id="manualMode">MANUAL MODE</button></div>
+          <label for="targetTemp">Target temperature (°C)</label><input id="targetTemp" type="number" min="5" max="40"
+            step="0.5" value="25">
+          <button class="btn" id="saveTarget">Save target temperature</button>
+          <div id="manualControls" class="hidden">
+            <label>Manual Peltier control</label>
+            <div class="manual"><button class="btn" id="peltierOn">Peltier ON</button><button class="btn danger"
+                id="peltierOff">Peltier OFF</button></div>
+          </div>
+          <div class="note">Control commands are written to Firebase. The ESP32 firmware must read these command paths
+            before website control will operate the hardware.</div>
+          <p id="controlMessage" class="sub" aria-live="polite"></p>
+        </article>
+      </section>
+      <footer>MKB Electrical & Electronics · ESP32 + DHT11 + Firebase</footer>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script>
+    // Firebase web app configuration. Paste the apiKey from Firebase Console here.
+    const firebaseConfig = {
+      apiKey: "PASTE_YOUR_FIREBASE_WEB_API_KEY",
+      authDomain: "mkb-solar-cooling-system.firebaseapp.com",
+      databaseURL: "https://mkb-solar-cooling-system-default-rtdb.firebaseio.com",
+      projectId: "mkb-solar-cooling-system",
+      storageBucket: "mkb-solar-cooling-system.firebasestorage.app",
+      messagingSenderId: "746491395502",
+      appId: "1:746491395502:web:dc8bad5c0dfa15f179dc3f",
+      measurementId: "G-8P64R9T2XQ"
+    };
+
+    const $ = id => document.getElementById(id);
+    let auth, db, sensorRef, statusRef, controlRef, currentMode = "AUTO";
+
+    try {
+      if (firebaseConfig.apiKey !== "PASTE_YOUR_FIREBASE_WEB_API_KEY") {
+        firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        db = firebase.database();
+        auth.onAuthStateChanged(user => {
+          if (user) showDashboard();
+          else showLogin();
+        });
+      } else {
+        $("loginError").textContent = "Add the Firebase Web API key in index.html, then reload this page.";
+      }
+    } catch (e) {
+      $("loginError").textContent = "Firebase setup error: " + e.message;
+    }
+
+    function showLogin() { $("loginView").classList.remove("hidden"); $("dashboard").classList.add("hidden"); }
+    function showDashboard() {
+      $("loginView").classList.add("hidden"); $("dashboard").classList.remove("hidden");
+      sensorRef = db.ref("sensor");
+      statusRef = db.ref("status");
+      controlRef = db.ref("control");
+      sensorRef.on("value", snap => {
+        const v = snap.val() || {};
+        $("temperature").textContent = Number.isFinite(Number(v.temperature)) ? Number(v.temperature).toFixed(1) : "--.-";
+        $("humidity").textContent = Number.isFinite(Number(v.humidity)) ? Number(v.humidity).toFixed(1) : "--.-";
+        $("sensorStatus").textContent = v.temperature == null ? "Waiting for ESP32" : "Receiving data";
+        $("lastUpdate").textContent = v.updatedAt ? new Date(v.updatedAt).toLocaleString() : "--";
+        $("connectionDot").classList.toggle("live", v.temperature != null);
+        $("connectionText").textContent = v.temperature != null ? "Data received" : "No sensor data";
+      });
+      statusRef.on("value", snap => {
+        const s = snap.val() || {};
+        const state = String(s.peltier || "--").toUpperCase();
+        $("peltier").textContent = state;
+        $("peltier").className = "value " + (state === "ON" ? "on" : state === "OFF" ? "off" : "");
+      });
+      controlRef.on("value", snap => {
+        const c = snap.val() || {};
+        currentMode = c.mode || "AUTO";
+        $("modeStatus").textContent = currentMode;
+        $("targetTemp").value = c.targetTemperature ?? 25;
+        $("autoMode").classList.toggle("active", currentMode === "AUTO");
+        $("manualMode").classList.toggle("active", currentMode === "MANUAL");
+        $("manualControls").classList.toggle("hidden", currentMode !== "MANUAL");
+      });
+    }
+
+    $("loginBtn").addEventListener("click", async () => {
+      $("loginError").textContent = "";
+      if (!auth) { $("loginError").textContent = "Firebase API key is not configured yet."; return; }
+      try { await auth.signInWithEmailAndPassword($("email").value.trim(), $("password").value); }
+      catch (e) { $("loginError").textContent = e.message; }
+    });
+    $("logoutBtn").addEventListener("click", () => auth.signOut());
+    async function writeControl(data) {
+      $("controlMessage").textContent = "Saving…";
+      try { await controlRef.update(data); $("controlMessage").textContent = "Saved to Firebase."; }
+      catch (e) { $("controlMessage").textContent = "Could not save: " + e.message; }
+    }
+    $("autoMode").addEventListener("click", () => writeControl({ mode: "AUTO" }));
+    $("manualMode").addEventListener("click", () => writeControl({ mode: "MANUAL" }));
+    $("saveTarget").addEventListener("click", () => {
+      const t = Number($("targetTemp").value);
+      if (!Number.isFinite(t) || t < 5 || t > 40) { $("controlMessage").textContent = "Enter a target between 5°C and 40°C."; return; }
+      writeControl({ targetTemperature: t });
+    });
+    $("peltierOn").addEventListener("click", () => writeControl({ mode: "MANUAL", manualPeltier: true }));
+    $("peltierOff").addEventListener("click", () => writeControl({ mode: "MANUAL", manualPeltier: false }));
+  </script>
+</body>
+
+</html>
